@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class ProductViewController: UIViewController {
 
@@ -207,94 +208,149 @@ class ProductViewController: UIViewController {
 
     func setupView() {
         view.backgroundColor = .systemBackground
-        
         view.addSubview(searchBackground)
+        searchBackground.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(52)
+            make.left.right.equalToSuperview().offset(22)
+            make.height.equalToSuperview().dividedBy(12)
+        }
+        
         searchBackground.addSubview(searchIcon)
-        searchIcon.translatesAutoresizingMaskIntoConstraints = false
-        searchIcon.topAnchor.constraint(equalTo: searchBackground.topAnchor, constant: 21).isActive = true
-        searchIcon.leadingAnchor.constraint(equalTo: searchBackground.leadingAnchor, constant: 17).isActive = true
+        searchIcon.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.left.equalToSuperview().offset(17)
+        }
         
         searchBackground.addSubview(searchTextField)
-        searchTextField.translatesAutoresizingMaskIntoConstraints = false
-        searchTextField.heightAnchor.constraint(equalToConstant: 22).isActive = true
-        searchTextField.topAnchor.constraint(equalTo: searchBackground.topAnchor, constant: 16).isActive = true
-        searchTextField.leadingAnchor.constraint(equalTo: searchBackground.leadingAnchor, constant: 45).isActive = true
+        searchTextField.snp.makeConstraints { make in
+            make.centerY.equalToSuperview().offset(-5)
+            make.left.equalToSuperview().offset(45)
+        }
         
         searchBackground.addSubview(searchDetail)
-        searchDetail.translatesAutoresizingMaskIntoConstraints = false
-        searchDetail.widthAnchor.constraint(equalToConstant: 370).isActive = true
-        searchDetail.heightAnchor.constraint(equalToConstant: 55).isActive = true
-        searchDetail.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 22).isActive = true
-        searchDetail.topAnchor.constraint(equalTo: view.topAnchor, constant: 52).isActive = true
-        
-        searchBackground.translatesAutoresizingMaskIntoConstraints = false
-        searchBackground.widthAnchor.constraint(equalToConstant: 370).isActive = true
-        searchBackground.heightAnchor.constraint(equalToConstant: 55).isActive = true
-        searchBackground.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 22).isActive = true
-        searchBackground.topAnchor.constraint(equalTo: view.topAnchor, constant: 52).isActive = true
+        searchDetail.snp.makeConstraints { make in
+            make.bottom.equalToSuperview().offset(-4)
+        }
         
         view.addSubview(filterSortBackground)
-        filterSortBackground.addSubview(filterButton)
-        filterButton.translatesAutoresizingMaskIntoConstraints = false
-        filterButton.widthAnchor.constraint(equalToConstant: 66).isActive = true
-        filterButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        filterButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 266).isActive = true
-        filterButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 150).isActive = true
+        filterSortBackground.snp.makeConstraints { make in
+            make.top.equalTo(searchBackground.snp.bottom).offset(24)
+            make.left.right.equalTo(searchBackground)
+            make.height.equalToSuperview().dividedBy(12)
+        }
         
-        filterSortBackground.addSubview(sortButton)
-        sortButton.translatesAutoresizingMaskIntoConstraints = false
-        sortButton.widthAnchor.constraint(equalToConstant: 69).isActive = true
-        sortButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        sortButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 80).isActive = true
-        sortButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 150).isActive = true
+        filterSortBackground.addSubview(filterButton)
+        filterButton.snp.makeConstraints { make in
+            make.centerX.equalToSuperview().dividedBy(0.75)
+            make.centerY.equalToSuperview()
+        }
         
         filterSortBackground.addSubview(lineImage)
-        lineImage.translatesAutoresizingMaskIntoConstraints = false
-        lineImage.widthAnchor.constraint(equalToConstant: 0).isActive = true
-        lineImage.heightAnchor.constraint(equalToConstant: 33).isActive = true
-        lineImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 207).isActive = true
-        lineImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 143).isActive = true
+        lineImage.snp.makeConstraints { make in
+            make.centerX.equalToSuperview().offset(-22)
+            make.centerY.equalTo(filterSortBackground)
+        }
         
-        filterSortBackground.translatesAutoresizingMaskIntoConstraints = false
-        filterSortBackground.widthAnchor.constraint(equalToConstant: 371).isActive = true
-        filterSortBackground.heightAnchor.constraint(equalToConstant: 57).isActive = true
-        filterSortBackground.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 21).isActive = true
-        filterSortBackground.topAnchor.constraint(equalTo: view.topAnchor, constant: 131).isActive = true
+        filterSortBackground.addSubview(sortButton)
+        sortButton.snp.makeConstraints { make in
+            make.centerX.equalToSuperview().dividedBy(2)
+            make.centerY.equalTo(filterSortBackground)
+        }
         
         view.addSubview(menuBackground)
+        menuBackground.snp.makeConstraints { make in
+            make.left.right.equalToSuperview()
+            make.bottom.equalTo(view.snp.bottom)
+            make.height.equalTo(29)
+        }
+
         menuBackground.addSubview(profileButton)
-        profileButton.translatesAutoresizingMaskIntoConstraints = false
-        profileButton.widthAnchor.constraint(equalToConstant: 63).isActive = true
-        profileButton.heightAnchor.constraint(equalToConstant: 69).isActive = true
-        profileButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 322).isActive = true
-        profileButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 666).isActive = true
+        profileButton.snp.makeConstraints { make in
+            make.right.equalToSuperview().offset(-29)
+            make.bottom.equalToSuperview().offset(-1)
+        }
         
         menuBackground.addSubview(ordersButton)
-        ordersButton.translatesAutoresizingMaskIntoConstraints = false
-        ordersButton.widthAnchor.constraint(equalToConstant: 63).isActive = true
-        ordersButton.heightAnchor.constraint(equalToConstant: 69).isActive = true
-        ordersButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 224).isActive = true
-        ordersButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 666).isActive = true
+        ordersButton.snp.makeConstraints { make in
+            make.right.equalToSuperview().offset(-127)
+            make.bottom.equalToSuperview().offset(-1)
+        }
         
         menuBackground.addSubview(categoryButton)
-        categoryButton.translatesAutoresizingMaskIntoConstraints = false
-        categoryButton.widthAnchor.constraint(equalToConstant: 63).isActive = true
-        categoryButton.heightAnchor.constraint(equalToConstant: 69).isActive = true
-        categoryButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 126).isActive = true
-        categoryButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 666).isActive = true
+        categoryButton.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(126)
+            make.bottom.equalToSuperview().offset(-1)
+        }
         
         menuBackground.addSubview(homePageButton)
-        homePageButton.translatesAutoresizingMaskIntoConstraints = false
-        homePageButton.widthAnchor.constraint(equalToConstant: 63).isActive = true
-        homePageButton.heightAnchor.constraint(equalToConstant: 70).isActive = true
-        homePageButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 28).isActive = true
-        homePageButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 666).isActive = true
+        homePageButton.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(28)
+            make.bottom.equalToSuperview().offset(-1)
+        }
         
-        menuBackground.translatesAutoresizingMaskIntoConstraints = false
-        menuBackground.widthAnchor.constraint(equalToConstant: 414).isActive = true
-        menuBackground.heightAnchor.constraint(equalToConstant: 70).isActive = true
-        menuBackground.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
-        menuBackground.topAnchor.constraint(equalTo: view.topAnchor, constant: 666).isActive = true
+        
+//        view.addSubview(filterSortBackground)
+//        filterSortBackground.addSubview(filterButton)
+//        filterButton.translatesAutoresizingMaskIntoConstraints = false
+//        filterButton.widthAnchor.constraint(equalToConstant: 66).isActive = true
+//        filterButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
+//        filterButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 266).isActive = true
+//        filterButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 150).isActive = true
+//
+//        filterSortBackground.addSubview(sortButton)
+//        sortButton.translatesAutoresizingMaskIntoConstraints = false
+//        sortButton.widthAnchor.constraint(equalToConstant: 69).isActive = true
+//        sortButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
+//        sortButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 80).isActive = true
+//        sortButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 150).isActive = true
+//
+//        filterSortBackground.addSubview(lineImage)
+//        lineImage.translatesAutoresizingMaskIntoConstraints = false
+//        lineImage.widthAnchor.constraint(equalToConstant: 0).isActive = true
+//        lineImage.heightAnchor.constraint(equalToConstant: 33).isActive = true
+//        lineImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 207).isActive = true
+//        lineImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 143).isActive = true
+//
+//        filterSortBackground.translatesAutoresizingMaskIntoConstraints = false
+//        filterSortBackground.widthAnchor.constraint(equalToConstant: 371).isActive = true
+//        filterSortBackground.heightAnchor.constraint(equalToConstant: 57).isActive = true
+//        filterSortBackground.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 21).isActive = true
+//        filterSortBackground.topAnchor.constraint(equalTo: view.topAnchor, constant: 131).isActive = true
+//       // --------------------
+//        view.addSubview(menuBackground)
+//        menuBackground.addSubview(profileButton)
+//        profileButton.translatesAutoresizingMaskIntoConstraints = false
+//        profileButton.widthAnchor.constraint(equalToConstant: 63).isActive = true
+//        profileButton.heightAnchor.constraint(equalToConstant: 69).isActive = true
+//        profileButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 322).isActive = true
+//        profileButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 666).isActive = true
+//
+//        menuBackground.addSubview(ordersButton)
+//        ordersButton.translatesAutoresizingMaskIntoConstraints = false
+//        ordersButton.widthAnchor.constraint(equalToConstant: 63).isActive = true
+//        ordersButton.heightAnchor.constraint(equalToConstant: 69).isActive = true
+//        ordersButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 224).isActive = true
+//        ordersButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 666).isActive = true
+//
+//        menuBackground.addSubview(categoryButton)
+//        categoryButton.translatesAutoresizingMaskIntoConstraints = false
+//        categoryButton.widthAnchor.constraint(equalToConstant: 63).isActive = true
+//        categoryButton.heightAnchor.constraint(equalToConstant: 69).isActive = true
+//        categoryButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 126).isActive = true
+//        categoryButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 666).isActive = true
+//
+//        menuBackground.addSubview(homePageButton)
+//        homePageButton.translatesAutoresizingMaskIntoConstraints = false
+//        homePageButton.widthAnchor.constraint(equalToConstant: 63).isActive = true
+//        homePageButton.heightAnchor.constraint(equalToConstant: 70).isActive = true
+//        homePageButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 28).isActive = true
+//        homePageButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 666).isActive = true
+//
+//        menuBackground.translatesAutoresizingMaskIntoConstraints = false
+//        menuBackground.widthAnchor.constraint(equalToConstant: 414).isActive = true
+//        menuBackground.heightAnchor.constraint(equalToConstant: 70).isActive = true
+//        menuBackground.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+//        menuBackground.topAnchor.constraint(equalTo: view.topAnchor, constant: 666).isActive = true
     }
 }
 
