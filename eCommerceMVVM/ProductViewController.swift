@@ -8,8 +8,26 @@
 import UIKit
 import SnapKit
 
-class ProductViewController: UIViewController {
-
+class ProductViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+    
+    private enum Constants {
+        static let collectionViewCellIdentifier = "collectionCell"
+      }
+   
+    private lazy var collectionView: UICollectionView = {
+            let layout : UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+            layout.minimumInteritemSpacing = 5
+            layout.minimumLineSpacing = 5
+            let width = 179 //(view.frame.size.width - 20) / 2
+            let height =  204 //width*3/2
+            layout.itemSize = CGSize(width: width, height: height)
+            let collectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
+            collectionView.register(CollectionViewCell.self, forCellWithReuseIdentifier: Constants.collectionViewCellIdentifier)
+            collectionView.backgroundColor = UIColor.white
+            return collectionView
+        }()
+    
+    //MARK: User Interface Element Propertys
     private lazy var searchTextField: UITextField = {
         var view = UITextField()
         view.frame = CGRect(x: 0, y: 0, width: 278.29, height: 22)
@@ -155,7 +173,6 @@ class ProductViewController: UIViewController {
         var view = UIButton()
         view.setImage(UIImage(named: "Orders"), for: .normal)
         view.frame = CGRect(x: 0, y: 0, width: 63, height: 69)
-        view.backgroundColor = .white
         return view
     }()
     
@@ -163,7 +180,6 @@ class ProductViewController: UIViewController {
         var view = UIButton()
         view.setImage(UIImage(named: "Category"), for: .normal)
         view.frame = CGRect(x: 0, y: 0, width: 63, height: 69)
-        view.backgroundColor = .white
         return view
     }()
     
@@ -171,7 +187,7 @@ class ProductViewController: UIViewController {
         var view = UIButton()
         view.setImage(UIImage(named: "HomePage"), for: .normal)
         view.frame = CGRect(x: 0, y: 0, width: 63, height: 70)
-        view.backgroundColor = .white
+        print("tapped")
         return view
     }()
     
@@ -201,11 +217,12 @@ class ProductViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-       
+        collectionView.delegate = self
+        collectionView.dataSource = self
         setupView()
     }
 
+    //MARK: Setup User Interface
     func setupView() {
         view.backgroundColor = .systemBackground
         view.addSubview(searchBackground)
@@ -288,69 +305,32 @@ class ProductViewController: UIViewController {
             make.bottom.equalToSuperview().offset(-1)
         }
         
-        
-//        view.addSubview(filterSortBackground)
-//        filterSortBackground.addSubview(filterButton)
-//        filterButton.translatesAutoresizingMaskIntoConstraints = false
-//        filterButton.widthAnchor.constraint(equalToConstant: 66).isActive = true
-//        filterButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
-//        filterButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 266).isActive = true
-//        filterButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 150).isActive = true
-//
-//        filterSortBackground.addSubview(sortButton)
-//        sortButton.translatesAutoresizingMaskIntoConstraints = false
-//        sortButton.widthAnchor.constraint(equalToConstant: 69).isActive = true
-//        sortButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
-//        sortButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 80).isActive = true
-//        sortButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 150).isActive = true
-//
-//        filterSortBackground.addSubview(lineImage)
-//        lineImage.translatesAutoresizingMaskIntoConstraints = false
-//        lineImage.widthAnchor.constraint(equalToConstant: 0).isActive = true
-//        lineImage.heightAnchor.constraint(equalToConstant: 33).isActive = true
-//        lineImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 207).isActive = true
-//        lineImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 143).isActive = true
-//
-//        filterSortBackground.translatesAutoresizingMaskIntoConstraints = false
-//        filterSortBackground.widthAnchor.constraint(equalToConstant: 371).isActive = true
-//        filterSortBackground.heightAnchor.constraint(equalToConstant: 57).isActive = true
-//        filterSortBackground.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 21).isActive = true
-//        filterSortBackground.topAnchor.constraint(equalTo: view.topAnchor, constant: 131).isActive = true
-//       // --------------------
-//        view.addSubview(menuBackground)
-//        menuBackground.addSubview(profileButton)
-//        profileButton.translatesAutoresizingMaskIntoConstraints = false
-//        profileButton.widthAnchor.constraint(equalToConstant: 63).isActive = true
-//        profileButton.heightAnchor.constraint(equalToConstant: 69).isActive = true
-//        profileButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 322).isActive = true
-//        profileButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 666).isActive = true
-//
-//        menuBackground.addSubview(ordersButton)
-//        ordersButton.translatesAutoresizingMaskIntoConstraints = false
-//        ordersButton.widthAnchor.constraint(equalToConstant: 63).isActive = true
-//        ordersButton.heightAnchor.constraint(equalToConstant: 69).isActive = true
-//        ordersButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 224).isActive = true
-//        ordersButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 666).isActive = true
-//
-//        menuBackground.addSubview(categoryButton)
-//        categoryButton.translatesAutoresizingMaskIntoConstraints = false
-//        categoryButton.widthAnchor.constraint(equalToConstant: 63).isActive = true
-//        categoryButton.heightAnchor.constraint(equalToConstant: 69).isActive = true
-//        categoryButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 126).isActive = true
-//        categoryButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 666).isActive = true
-//
-//        menuBackground.addSubview(homePageButton)
-//        homePageButton.translatesAutoresizingMaskIntoConstraints = false
-//        homePageButton.widthAnchor.constraint(equalToConstant: 63).isActive = true
-//        homePageButton.heightAnchor.constraint(equalToConstant: 70).isActive = true
-//        homePageButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 28).isActive = true
-//        homePageButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 666).isActive = true
-//
-//        menuBackground.translatesAutoresizingMaskIntoConstraints = false
-//        menuBackground.widthAnchor.constraint(equalToConstant: 414).isActive = true
-//        menuBackground.heightAnchor.constraint(equalToConstant: 70).isActive = true
-//        menuBackground.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
-//        menuBackground.topAnchor.constraint(equalTo: view.topAnchor, constant: 666).isActive = true
+        view.addSubview(collectionView)
+        collectionView.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(21)
+            make.right.equalToSuperview().offset(-21)
+            make.top.equalTo(filterSortBackground.snp.bottom).offset(20)
+            make.bottom.equalTo(menuBackground.snp.top).offset(-70)
+        }
     }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 30
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.collectionViewCellIdentifier, for: indexPath) as? CollectionViewCell else { return UICollectionViewCell() }
+        return cell
+    }
+
+    func layout() {
+           let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
+            layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom:  0, right: 0)
+            layout.minimumInteritemSpacing = 5
+            layout.minimumLineSpacing = 5
+            let width = (collectionView.frame.size.width - 36) / 2
+            let height = width*3/2
+            layout.itemSize = CGSize(width: width, height: height)
+       }
 }
 
