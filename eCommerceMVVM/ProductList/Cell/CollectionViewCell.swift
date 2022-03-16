@@ -29,7 +29,7 @@ class CollectionViewCell: UICollectionViewCell {
         view.lineBreakMode = .byWordWrapping
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.15
-        view.attributedText = NSMutableAttributedString(string: "Nike Pegasus 37\nEU291", attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
+//        view.attributedText = NSMutableAttributedString(string: "Nike Pegasus 37\nEU291", attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
         return view
     }()
     
@@ -40,7 +40,7 @@ class CollectionViewCell: UICollectionViewCell {
 
         view.textColor = UIColor(red: 0.176, green: 0.612, blue: 0.859, alpha: 1)
         view.font = UIFont(name: "Titillium-Semibold", size: 18)
-        view.text = "16,400 TL"
+//        view.text = "16,400 TL"
         return view
     }()
     
@@ -55,9 +55,9 @@ class CollectionViewCell: UICollectionViewCell {
         layer0.position = view.center
         view.layer.addSublayer(layer0)
 
-        let image1 = UIImage(named: "productImage1.jpg")?.cgImage
+//        let image1 = UIImage(named: "productImage1.jpg")?.cgImage
         let layer1 = CALayer()
-        layer1.contents = image1
+       // layer1.contents = image1
         layer1.transform = CATransform3DMakeAffineTransform(CGAffineTransform(a: 1, b: 0, c: 0, d: 1.21, tx: 0, ty: -0.11))
         layer1.bounds = view.bounds
         layer1.position = view.center
@@ -105,5 +105,11 @@ class CollectionViewCell: UICollectionViewCell {
             make.top.equalTo(titleLabel.snp.bottom).offset(5)
             make.bottom.equalTo(background.snp.bottom).offset(-5)
         }
+    }
+    
+    func saveModel(model: ProductDataModal) {
+        titleLabel.text = model.title
+        priceLabel.text = String(model.price)
+        imageView.image = model.image
     }
 }

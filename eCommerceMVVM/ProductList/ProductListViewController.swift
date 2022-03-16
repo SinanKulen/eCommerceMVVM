@@ -8,8 +8,14 @@
 import UIKit
 import SnapKit
 
-class ProductViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+class ProductListViewController: BaseViewController {
     
+    private lazy var productList : [ProductDataModal] = []
+    var viewModel: ProductListViewModel {
+        didSet {
+            viewModel.delegate = self
+        }
+    }
     private enum Constants {
         static let collectionViewCellIdentifier = "collectionCell"
       }
@@ -18,14 +24,14 @@ class ProductViewController: UIViewController, UICollectionViewDelegate, UIColle
             let layout : UICollectionViewFlowLayout = UICollectionViewFlowLayout()
             layout.minimumInteritemSpacing = 5
             layout.minimumLineSpacing = 5
-            let width = 179 //(view.frame.size.width - 20) / 2
-            let height =  204 //width*3/2
+            let width = 179
+            let height =  204
             layout.itemSize = CGSize(width: width, height: height)
             let collectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
             collectionView.register(CollectionViewCell.self, forCellWithReuseIdentifier: Constants.collectionViewCellIdentifier)
             collectionView.backgroundColor = UIColor.white
             return collectionView
-        }()
+    }()
     
     //MARK: User Interface Element Propertys
     private lazy var searchTextField: UITextField = {
@@ -37,7 +43,8 @@ class ProductViewController: UIViewController, UICollectionViewDelegate, UIColle
         view.font = UIFont(name: "Titillium-Semibold", size: 16)
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.15
-        view.attributedText = NSMutableAttributedString(string: "Kategori veya ürün ara", attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
+//        view.attributedText = NSMutableAttributedString(string: "Kategori veya ürün ara", attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
+        view.placeholder = "Kategori veya ürün ara"
         return view
     }()
     
@@ -217,10 +224,22 @@ class ProductViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewModel.loadData()
+        collectionView.refreshControl = refreshController
         collectionView.delegate = self
         collectionView.dataSource = self
         setupView()
     }
+    
+    private func configureRefreshController() {
+            refreshController.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        }
+        
+    @objc private func refresh() {
+            viewModel.refreshData()
+            collectionView.reloadData()
+            refreshController.endRefreshing()
+        }
 
     //MARK: Setup User Interface
     func setupView() {
@@ -314,15 +333,6 @@ class ProductViewController: UIViewController, UICollectionViewDelegate, UIColle
         }
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 30
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.collectionViewCellIdentifier, for: indexPath) as? CollectionViewCell else { return UICollectionViewCell() }
-        return cell
-    }
-
     func layout() {
            let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
             layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom:  0, right: 0)
@@ -331,6 +341,36 @@ class ProductViewController: UIViewController, UICollectionViewDelegate, UIColle
             let width = (collectionView.frame.size.width - 36) / 2
             let height = width*3/2
             layout.itemSize = CGSize(width: width, height: height)
-       }
+    }
 }
 
+extension ProductListViewController: ProductListViewModelDelegate {
+    func handleViewModelOutput(_ output: ProductListViewModelOutput) {
+        DispatchQueue.main.async {
+            switch output {
+            case .setLoading(let loading):
+                self.setActivityIndıcatorAnimation(with: loading)
+            case .error(let error):
+                self.showAlert(with: "Error", error.rawValue)
+            case .showProductList:
+                self.collectionView.reloadData()
+            }
+        }
+    }
+}
+
+extension ProductListViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return productList.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.collectionViewCellIdentifier, for: indexPath) as? CollectionViewCell else { return UICollectionViewCell() }
+        cell.saveModel(model: productList[indexPath.row])
+        return cell
+    }
+}
+
+extension ProductListViewController: UICollectionViewDelegate{
+    
+}
