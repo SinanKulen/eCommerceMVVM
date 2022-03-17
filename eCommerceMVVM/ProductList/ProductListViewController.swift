@@ -10,8 +10,8 @@ import SnapKit
 
 class ProductListViewController: BaseViewController {
     
-    private lazy var productList : [ProductDataModal] = []
-    var viewModel: ProductListViewModel {
+    //private lazy var productList : [ProductDataModal] = []
+    var viewModel: ProductListViewModelProtocol! {
         didSet {
             viewModel.delegate = self
         }
@@ -28,6 +28,8 @@ class ProductListViewController: BaseViewController {
             let height =  204
             layout.itemSize = CGSize(width: width, height: height)
             let collectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
+            collectionView.delegate = self
+            collectionView.dataSource = self
             collectionView.register(CollectionViewCell.self, forCellWithReuseIdentifier: Constants.collectionViewCellIdentifier)
             collectionView.backgroundColor = UIColor.white
             return collectionView
@@ -226,8 +228,7 @@ class ProductListViewController: BaseViewController {
         super.viewDidLoad()
         viewModel.loadData()
         collectionView.refreshControl = refreshController
-        collectionView.delegate = self
-        collectionView.dataSource = self
+        configureRefreshController()
         setupView()
     }
     
@@ -361,16 +362,15 @@ extension ProductListViewController: ProductListViewModelDelegate {
 
 extension ProductListViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return productList.count
+        return viewModel.productList.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.collectionViewCellIdentifier, for: indexPath) as? CollectionViewCell else { return UICollectionViewCell() }
-        cell.saveModel(model: productList[indexPath.row])
+        cell.saveModel(model: viewModel.productList[indexPath.row])
         return cell
     }
 }
 
 extension ProductListViewController: UICollectionViewDelegate{
-    
 }

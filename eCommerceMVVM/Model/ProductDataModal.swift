@@ -7,31 +7,25 @@
 
 import Foundation
 
-struct ProductDataModal: Codable, Equatable {
+struct ProductDataModal: Decodable{
     let id: Int
     let title: String
     let price: Double
-    let dataResponseDescription: String
-    let category: Category
+    let description: String
+    let category: String
     let image: String
     let rating: Rating
-
-    enum CodingKeys: String, CodingKey {
-        case id, title, price
-        case dataResponseDescription = "description"
-        case category, image, rating
-    }
 }
 
-enum Category: String, Codable, Equatable {
+enum Category: String, Decodable {
     case electronics = "electronics"
     case jewelery = "jewelery"
     case menSClothing = "men's clothing"
     case womenSClothing = "women's clothing"
 }
 
-struct Rating: Codable, Equatable {
-    let rate: Double
-    let count: Int
+struct Rating: Decodable{
+    var rate: Double
+    var count: Int
 }
 

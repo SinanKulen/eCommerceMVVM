@@ -17,7 +17,7 @@ extension RequestType : NetworkSetting {
         switch self
         {
         case .product :
-            return "/product"
+            return "/products"
         }
     }
 }

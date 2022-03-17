@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import Kingfisher
 
 class CollectionViewCell: UICollectionViewCell {
   
@@ -110,6 +111,6 @@ class CollectionViewCell: UICollectionViewCell {
     func saveModel(model: ProductDataModal) {
         titleLabel.text = model.title
         priceLabel.text = String(model.price)
-        imageView.image = model.image
+        imageView.kf.setImage(with: URL(string: model.image))
     }
 }
