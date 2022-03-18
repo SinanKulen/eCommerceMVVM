@@ -374,3 +374,7 @@ extension ProductListViewController: UICollectionViewDataSource {
 
 extension ProductListViewController: UICollectionViewDelegate{
 }
+
+extension ProductListViewController
+{
+}

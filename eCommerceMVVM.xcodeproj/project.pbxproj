@@ -24,11 +24,11 @@
 		1B2868DF27E26E6500311671 /* ProductListContracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B2868DE27E26E6500311671 /* ProductListContracts.swift */; };
 		1B2868E427E27C8800311671 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B2868E327E27C8800311671 /* BaseViewController.swift */; };
 		1B2868E827E27D6D00311671 /* UIViewController+ .swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B2868E727E27D6D00311671 /* UIViewController+ .swift */; };
-		1B2868EB27E286CE00311671 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 1B2868EA27E286CE00311671 /* Kingfisher */; };
 		1B2868ED27E327B800311671 /* ProductListSceneBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B2868EC27E327B800311671 /* ProductListSceneBuilder.swift */; };
 		1B2868EF27E3292400311671 /* AppContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B2868EE27E3292400311671 /* AppContainer.swift */; };
 		1B2868F127E3294100311671 /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B2868F027E3294100311671 /* AppRouter.swift */; };
 		1B2868F327E3526500311671 /* ProductListPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B2868F227E3526500311671 /* ProductListPresentation.swift */; };
+		1B2868F827E47B1200311671 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 1B2868F727E47B1200311671 /* Kingfisher */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -61,7 +61,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1B2868EB27E286CE00311671 /* Kingfisher in Frameworks */,
+				1B2868F827E47B1200311671 /* Kingfisher in Frameworks */,
 				1B2868CB27DF7FF500311671 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -74,6 +74,7 @@
 			children = (
 				1B2868AE27D9F10900311671 /* eCommerceMVVM */,
 				1B2868AD27D9F10900311671 /* Products */,
+				1B2868F627E47B1200311671 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -161,6 +162,13 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
+		1B2868F627E47B1200311671 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -179,7 +187,7 @@
 			name = eCommerceMVVM;
 			packageProductDependencies = (
 				1B2868CA27DF7FF500311671 /* SnapKit */,
-				1B2868EA27E286CE00311671 /* Kingfisher */,
+				1B2868F727E47B1200311671 /* Kingfisher */,
 			);
 			productName = eCommerceMVVM;
 			productReference = 1B2868AC27D9F10900311671 /* eCommerceMVVM.app */;
@@ -500,7 +508,7 @@
 			package = 1B2868C927DF7FF500311671 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
 		};
-		1B2868EA27E286CE00311671 /* Kingfisher */ = {
+		1B2868F727E47B1200311671 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 1B2868E927E286CE00311671 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;

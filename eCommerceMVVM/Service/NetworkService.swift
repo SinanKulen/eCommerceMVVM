@@ -9,12 +9,12 @@ import Foundation
 
 protocol NetworkServiceProtocol
 {
-    func fetchData(completion: @escaping(Result<ProductDataModal, NetworkErrors>) -> Void)
+    func fetchData(completion: @escaping(Result<ProductResponse, NetworkErrors>) -> Void)
 }
 
 class NetworkService : NetworkServiceProtocol
 {
-    func fetchData(completion: @escaping(Result<ProductDataModal, NetworkErrors>) -> Void) {
+    func fetchData(completion: @escaping(Result<ProductResponse, NetworkErrors>) -> Void) {
         dataRequest(RequestType.product, completion: completion)
     }
     

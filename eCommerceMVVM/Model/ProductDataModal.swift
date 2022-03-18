@@ -7,6 +7,8 @@
 
 import Foundation
 
+typealias ProductResponse = [ProductDataModal]
+
 struct ProductDataModal: Decodable{
     let id: Int
     let title: String

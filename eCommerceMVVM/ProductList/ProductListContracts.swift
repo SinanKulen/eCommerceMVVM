@@ -9,7 +9,7 @@ import Foundation
 
 protocol ProductListViewModelProtocol {
     var delegate : ProductListViewModelDelegate? { get set }
-    var productList: [ProductDataModal] { get set }
+    var productList: ProductResponse { get set }
     func loadData()
     func refreshData()
 }

@@ -11,7 +11,7 @@ final class ProductListViewModel: ProductListViewModelProtocol {
 
     weak var delegate : ProductListViewModelDelegate?
     private let service : NetworkServiceProtocol
-    var productList: [ProductListPresentation] = []
+    var productList: ProductResponse = []
     init(service : NetworkServiceProtocol) {
         self.service = service
     }
@@ -26,7 +26,6 @@ final class ProductListViewModel: ProductListViewModelProtocol {
             switch result {
             case .success(let response):
                 self.productList = response
-                self.productList.append(i)
                 self.delegate?.handleViewModelOutput(.showProductList)
             case .failure(let error):
                 self.delegate?.handleViewModelOutput(.error(error))
