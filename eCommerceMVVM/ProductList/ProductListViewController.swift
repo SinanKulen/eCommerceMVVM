@@ -10,7 +10,7 @@ import SnapKit
 
 class ProductListViewController: BaseViewController {
     
-    //private lazy var productList : [ProductDataModal] = []
+    var isSort: Bool = false
     var viewModel: ProductListViewModelProtocol! {
         didSet {
             viewModel.delegate = self
@@ -106,6 +106,7 @@ class ProductListViewController: BaseViewController {
     private lazy var sortButton: UIButton = {
         var view = UIButton()
         view.setImage(UIImage(named: "Sort"), for: .normal)
+        view.addTarget(nil, action: #selector(tappedSortButton), for: .touchUpInside)
         view.frame = CGRect(x: 0, y: 0, width: 69, height: 20)
         view.backgroundColor = .white
         view.layer.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0).cgColor
@@ -343,6 +344,10 @@ class ProductListViewController: BaseViewController {
             let height = width*3/2
             layout.itemSize = CGSize(width: width, height: height)
     }
+    
+    @objc func tappedSortButton() {
+        isSort.toggle()
+    }
 }
 
 extension ProductListViewController: ProductListViewModelDelegate {
@@ -368,6 +373,23 @@ extension ProductListViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.collectionViewCellIdentifier, for: indexPath) as? CollectionViewCell else { return UICollectionViewCell() }
         cell.saveModel(model: viewModel.productList[indexPath.row])
+       
+        switch isSort {
+            case true:
+                let sortArray = viewModel.productList
+                let sortedArray = sortArray.sorted(by: { $0.price > $1.price})
+                cell.saveModel(model: sortedArray[indexPath.row])
+                DispatchQueue.main.async {
+                    collectionView.reloadData()
+                }
+            case false:
+                let sortArray = viewModel.productList
+                let sortedArray = sortArray.sorted(by: { $0.price < $1.price})
+                cell.saveModel(model: sortedArray[indexPath.row])
+                DispatchQueue.main.async {
+                    collectionView.reloadData()
+                }
+        }
         return cell
     }
 }
