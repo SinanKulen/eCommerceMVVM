@@ -14,7 +14,7 @@ struct ProductDataModal: Decodable{
     let title: String
     let price: Double
     let description: String
-    let category: String
+    let category: Category
     let image: String
     let rating: Rating
 }

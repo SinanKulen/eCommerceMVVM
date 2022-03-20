@@ -29,6 +29,7 @@
 		1B2868F127E3294100311671 /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B2868F027E3294100311671 /* AppRouter.swift */; };
 		1B2868F327E3526500311671 /* ProductListPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B2868F227E3526500311671 /* ProductListPresentation.swift */; };
 		1B2868F827E47B1200311671 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 1B2868F727E47B1200311671 /* Kingfisher */; };
+		1B71A19B27E60463001C6113 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B71A19A27E60463001C6113 /* FilterViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +55,7 @@
 		1B2868EE27E3292400311671 /* AppContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppContainer.swift; sourceTree = "<group>"; };
 		1B2868F027E3294100311671 /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
 		1B2868F227E3526500311671 /* ProductListPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListPresentation.swift; sourceTree = "<group>"; };
+		1B71A19A27E60463001C6113 /* FilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +133,7 @@
 				1B2868DC27E26CD000311671 /* ProductListViewModel.swift */,
 				1B2868DE27E26E6500311671 /* ProductListContracts.swift */,
 				1B2868EC27E327B800311671 /* ProductListSceneBuilder.swift */,
+				1B71A19A27E60463001C6113 /* FilterViewController.swift */,
 				1B2868B527D9F10900311671 /* ProductList.storyboard */,
 			);
 			path = ProductList;
@@ -260,6 +263,7 @@
 				1B2868D127E25C4400311671 /* NetworkErrors.swift in Sources */,
 				1B2868ED27E327B800311671 /* ProductListSceneBuilder.swift in Sources */,
 				1B2868C427D9F21200311671 /* NetworkService.swift in Sources */,
+				1B71A19B27E60463001C6113 /* FilterViewController.swift in Sources */,
 				1B2868F127E3294100311671 /* AppRouter.swift in Sources */,
 				1B2868B227D9F10900311671 /* SceneDelegate.swift in Sources */,
 				1B2868CF27E25C2800311671 /* NetworkSettings.swift in Sources */,

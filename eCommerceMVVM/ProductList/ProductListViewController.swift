@@ -8,9 +8,14 @@
 import UIKit
 import SnapKit
 
+enum selectedCategory {
+    case menuButtonTapped
+}
+
 class ProductListViewController: BaseViewController {
     
     var isSort: Bool = false
+    var selectedCategory : String = ""
     var viewModel: ProductListViewModelProtocol! {
         didSet {
             viewModel.delegate = self
@@ -18,7 +23,7 @@ class ProductListViewController: BaseViewController {
     }
     private enum Constants {
         static let collectionViewCellIdentifier = "collectionCell"
-      }
+    }
    
     private lazy var collectionView: UICollectionView = {
             let layout : UICollectionViewFlowLayout = UICollectionViewFlowLayout()
@@ -45,7 +50,7 @@ class ProductListViewController: BaseViewController {
         view.font = UIFont(name: "Titillium-Semibold", size: 16)
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.15
-//        view.attributedText = NSMutableAttributedString(string: "Kategori veya ürün ara", attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
+
         view.placeholder = "Kategori veya ürün ara"
         return view
     }()
@@ -116,6 +121,7 @@ class ProductListViewController: BaseViewController {
     private lazy var filterButton: UIButton = {
         var view = UIButton()
         view.setImage(UIImage(named: "Filter"), for: .normal)
+        view.addTarget(nil, action: #selector(tappedFilterButton), for: .touchUpInside)
         view.frame = CGRect(x: 0, y: 0, width: 66, height: 20)
         return view
     }()
@@ -222,6 +228,83 @@ class ProductListViewController: BaseViewController {
         layer0.position = shadows.center
         shadows.layer.addSublayer(layer0)
         view.layer.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0).cgColor
+        return view
+    }()
+    
+    private lazy var filterBackground : UIView = {
+        let view = UIView()
+        view.frame = CGRect(x: 0, y: 0, width: 180, height: 200)
+        view.backgroundColor = .white
+        return view
+    }()
+
+    private lazy var electronicsButton : UIButton = {
+        let view : UIButton = UIButton()
+        view.frame = CGRect(x: 0, y: 0, width: 50, height: 30)
+        view.backgroundColor = .white
+        view.setTitle("Electronics", for: .normal)
+        var config = UIButton.Configuration.gray()
+        config.cornerStyle = .capsule
+        view.configuration = config
+        view.isUserInteractionEnabled = true
+        view.addTarget(self, action: #selector(tappedMenuButton), for: .touchUpInside)
+        return view
+    }()
+    
+    private lazy var jeweleryButton : UIButton = {
+        let view : UIButton = UIButton()
+        view.frame = CGRect(x: 0, y: 0, width: 50, height: 30)
+        view.backgroundColor = .white
+        view.setTitle("Jewelery", for: .normal)
+        var config = UIButton.Configuration.gray()
+        config.cornerStyle = .capsule
+        view.configuration = config
+        view.isUserInteractionEnabled = true
+        return view
+    }()
+    
+    private lazy var mensClothingButton : UIButton = {
+        let view : UIButton = UIButton()
+        view.frame = CGRect(x: 0, y: 0, width: 50, height: 30)
+        view.backgroundColor = .white
+        view.setTitle("Men's Clothing", for: .normal)
+        var config = UIButton.Configuration.gray()
+        config.cornerStyle = .capsule
+        view.configuration = config
+        view.isUserInteractionEnabled = true
+        return view
+    }()
+    
+    private lazy var womensClothingButton : UIButton = {
+        let view : UIButton = UIButton()
+        view.frame = CGRect(x: 0, y: 0, width: 50, height: 30)
+        view.backgroundColor = .white
+        view.setTitle("Women's Clothing", for: .normal)
+        var config = UIButton.Configuration.gray()
+        config.cornerStyle = .capsule
+        view.configuration = config
+        view.isUserInteractionEnabled = true
+        return view
+    }()
+    
+    private lazy var exitButton : UIButton = {
+        let view : UIButton = UIButton()
+        view.frame = CGRect(x: 0, y: 0, width: 35, height: 25)
+        view.setImage(UIImage(systemName: "Stop"), for: .normal)
+        view.setTitle("Exit", for: .normal)
+        var config = UIButton.Configuration.gray()
+        config.cornerStyle = .capsule
+        view.configuration = config
+        view.addTarget(self, action: #selector(tappedExitButton), for: .touchUpInside)
+        return view
+    }()
+    
+    private lazy var titleLabel : UILabel = {
+        let view : UILabel = UILabel()
+        view.frame = CGRect(x: 0, y: 0, width: 50, height: 25)
+        view.text = "Kategori Seçiniz"
+        view.textColor = .systemBlue
+        view.textAlignment = .center
         return view
     }()
     
@@ -345,6 +428,41 @@ class ProductListViewController: BaseViewController {
             layout.itemSize = CGSize(width: width, height: height)
     }
     
+   
+    
+    @objc func tappedFilterButton() {
+//        let filterVC = FilterViewController(nibName: nil, bundle: nil)
+//        show(filterVC, sender: nil)
+        
+        filterBackground.isHidden = false
+        view.addSubview(filterBackground)
+        makeFilterBackground()
+        filterBackground.addSubview(exitButton)
+        makeExitButton()
+        filterBackground.addSubview(titleLabel)
+        makeTitleLabel()
+        filterBackground.addSubview(electronicsButton)
+        makeElectronicButton()
+        filterBackground.addSubview(jeweleryButton)
+        makeJeweleryButton()
+        filterBackground.addSubview(mensClothingButton)
+        makeMensClothingButton()
+        filterBackground.addSubview(womensClothingButton)
+        makeWomensClothingButton()
+    }
+    
+    @objc func tappedExitButton() {
+        filterBackground.isHidden = true
+    }
+    
+    @objc func tappedMenuButton() {
+        let sortArray = viewModel.productList
+        let sortedArray = sortArray.filter { item in
+           return item.category.rawValue == "electronics"
+        }
+        
+    }
+    
     @objc func tappedSortButton() {
         isSort.toggle()
     }
@@ -373,7 +491,6 @@ extension ProductListViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.collectionViewCellIdentifier, for: indexPath) as? CollectionViewCell else { return UICollectionViewCell() }
         cell.saveModel(model: viewModel.productList[indexPath.row])
-       
         switch isSort {
             case true:
                 let sortArray = viewModel.productList
@@ -399,4 +516,61 @@ extension ProductListViewController: UICollectionViewDelegate{
 
 extension ProductListViewController
 {
+    
+    func makeFilterBackground() {
+        filterBackground.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(70)
+            make.left.equalToSuperview().offset(50)
+            make.right.equalToSuperview().offset(-50)
+            make.bottom.equalToSuperview().offset(-70)
+        }
+    }
+    
+    func makeExitButton() {
+        exitButton.snp.makeConstraints { make in
+            make.top.equalTo(filterBackground).offset(20)
+            make.right.equalTo(filterBackground).offset(-20)
+        }
+    }
+    
+    func makeTitleLabel() {
+        titleLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(exitButton)
+            make.left.equalTo(filterBackground).offset(10)
+            make.right.equalTo(exitButton).offset(5)
+        }
+    }
+    
+    
+    func makeElectronicButton() {
+        electronicsButton.snp.makeConstraints { make in
+            make.top.equalTo(filterBackground).offset(70)
+            make.left.equalTo(filterBackground).offset(30)
+            make.right.equalTo(filterBackground).offset(-20)
+        }
+    }
+    
+    func makeJeweleryButton() {
+        jeweleryButton.snp.makeConstraints { make in
+            make.top.equalTo(electronicsButton.snp.bottom).offset(20)
+            make.left.equalTo(electronicsButton)
+            make.right.equalTo(electronicsButton)
+        }
+    }
+    
+    func makeMensClothingButton() {
+        mensClothingButton.snp.makeConstraints { make in
+            make.top.equalTo(jeweleryButton.snp.bottom).offset(20)
+            make.left.equalTo(jeweleryButton)
+            make.right.equalTo(jeweleryButton)
+        }
+    }
+    
+    func makeWomensClothingButton() {
+        womensClothingButton.snp.makeConstraints { make in
+            make.top.equalTo(mensClothingButton.snp.bottom).offset(20)
+            make.left.equalTo(mensClothingButton)
+            make.right.equalTo(mensClothingButton)
+        }
+    }
 }
