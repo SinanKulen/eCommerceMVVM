@@ -458,6 +458,7 @@ class ProductListViewController: BaseViewController {
     @objc func tappedMenuButton() {
         let sortArray = viewModel.productList
         let sortedArray = sortArray.filter { item in
+            
            return item.category.rawValue == "electronics"
         }
         
