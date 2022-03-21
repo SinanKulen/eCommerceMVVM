@@ -80,7 +80,6 @@ class CollectionViewCell: UICollectionViewCell {
             make.right.equalTo(background.snp.right)
             make.left.equalTo(background.snp.left)
             make.top.equalTo(imageView.snp.bottom)
-            //make.bottom.equalTo(priceLabel.snp.top).offset(5)
         }
         
         background.addSubview(priceLabel)
