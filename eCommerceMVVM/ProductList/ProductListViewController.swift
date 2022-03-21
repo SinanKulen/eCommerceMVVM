@@ -8,12 +8,12 @@
 import UIKit
 import SnapKit
 
-enum selectedCategory {
+enum isFiltering{
     case menuButtonTapped
 }
 
 class ProductListViewController: BaseViewController {
-    
+    var isFiltering : Bool = false
     var isSorting: Bool = false
     var isSearching: Bool = false
     var selectedCategory : String = ""
@@ -441,7 +441,7 @@ extension ProductListViewController: UICollectionViewDataSource {
                     let sortArray = viewModel.productList
                     let sortedArray = sortArray.sorted(by: { $0.price > $1.price})
                     cell.saveModel(model: sortedArray[indexPath.row])
-                DispatchQueue.main.async {
+                    DispatchQueue.main.async {
                         collectionView.reloadData()
                     }
                 case false:
