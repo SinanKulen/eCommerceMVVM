@@ -300,7 +300,6 @@ class ProductListViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        viewModel.loadData()
         getData()
         collectionView.refreshControl = refreshController
         configureRefreshController()
@@ -328,90 +327,34 @@ class ProductListViewController: BaseViewController {
     func setupView() {
         view.backgroundColor = .systemBackground
         view.addSubview(searchBackground)
-        searchBackground.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(52)
-            make.left.equalToSuperview().offset(22)
-            make.right.equalToSuperview().offset(-22)
-            make.height.equalToSuperview().dividedBy(12)
-        }
-        
+        makeSearchBackground()
         searchBackground.addSubview(searchBar)
-        searchBar.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.left.equalToSuperview()
-            make.right.equalToSuperview()
-            make.bottom.equalToSuperview()
-          
-        }
-        
+        makeSearchBar()
         searchBackground.addSubview(searchDetail)
-        searchDetail.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().offset(-4)
-        }
+        makeSearchDetail()
         
         view.addSubview(filterSortBackground)
-        filterSortBackground.snp.makeConstraints { make in
-            make.top.equalTo(searchBackground.snp.bottom).offset(24)
-            make.left.right.equalTo(searchBackground)
-            make.height.equalToSuperview().dividedBy(12)
-        }
-        
+        makeFilterSortBackground()
         filterSortBackground.addSubview(filterButton)
-        filterButton.snp.makeConstraints { make in
-            make.centerX.equalToSuperview().dividedBy(0.75)
-            make.centerY.equalToSuperview()
-        }
-        
+        makeFilterButton()
         filterSortBackground.addSubview(lineImage)
-        lineImage.snp.makeConstraints { make in
-            make.centerX.equalToSuperview().offset(-22)
-            make.centerY.equalTo(filterSortBackground)
-        }
-        
+        makeLineImage()
         filterSortBackground.addSubview(sortButton)
-        sortButton.snp.makeConstraints { make in
-            make.centerX.equalToSuperview().dividedBy(2)
-            make.centerY.equalTo(filterSortBackground)
-        }
+        makeSortButton()
         
         view.addSubview(menuBackground)
-        menuBackground.snp.makeConstraints { make in
-            make.left.right.equalToSuperview()
-            make.bottom.equalTo(view.snp.bottom)
-            make.height.equalTo(29)
-        }
-
+        makeMenuBackground()
         menuBackground.addSubview(profileButton)
-        profileButton.snp.makeConstraints { make in
-            make.right.equalToSuperview().offset(-29)
-            make.bottom.equalToSuperview().offset(-1)
-        }
-        
+        makeProfileButton()
         menuBackground.addSubview(ordersButton)
-        ordersButton.snp.makeConstraints { make in
-            make.right.equalToSuperview().offset(-127)
-            make.bottom.equalToSuperview().offset(-1)
-        }
-        
+        makeOrdersButton()
         menuBackground.addSubview(categoryButton)
-        categoryButton.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(126)
-            make.bottom.equalToSuperview().offset(-1)
-        }
-        
+        makeCategoryButton()
         menuBackground.addSubview(homePageButton)
-        homePageButton.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(28)
-            make.bottom.equalToSuperview().offset(-1)
-        }
+        makeHomePageButton()
         
         view.addSubview(collectionView)
-        collectionView.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(21)
-            make.right.equalToSuperview().offset(-21)
-            make.top.equalTo(filterSortBackground.snp.bottom).offset(20)
-            make.bottom.equalTo(menuBackground.snp.top).offset(-70)
-        }
+        makeCollectionView()
     }
     
     func layout() {
@@ -517,6 +460,20 @@ extension ProductListViewController: UICollectionViewDataSource {
 extension ProductListViewController: UICollectionViewDelegate{
 }
 
+extension ProductListViewController : UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text == "" {
+            isSearching = false
+            collectionView.reloadData()
+        } else {
+            isSearching = true
+            let list = viewModel.productList
+            filterArray = list.filter({ $0.title.contains( searchBar.text ?? "")})
+            collectionView.reloadData()
+        }
+    }
+}
+
 extension ProductListViewController
 {
     
@@ -576,18 +533,105 @@ extension ProductListViewController
             make.right.equalTo(mensClothingButton)
         }
     }
-}
-
-extension ProductListViewController : UISearchBarDelegate {
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchBar.text == "" {
-            isSearching = false
-            collectionView.reloadData()
-        } else {
-            isSearching = true
-            let list = viewModel.productList
-            filterArray = list.filter({ $0.title.contains( searchBar.text ?? "")})
-            collectionView.reloadData()
+    
+    func makeCollectionView() {
+        collectionView.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(21)
+            make.right.equalToSuperview().offset(-21)
+            make.top.equalTo(filterSortBackground.snp.bottom).offset(20)
+            make.bottom.equalTo(menuBackground.snp.top).offset(-70)
+        }
+    }
+    
+    func makeHomePageButton() {
+        homePageButton.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(28)
+            make.bottom.equalToSuperview().offset(-1)
+        }
+    }
+    
+    func makeCategoryButton() {
+        categoryButton.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(126)
+            make.bottom.equalToSuperview().offset(-1)
+        }
+    }
+    
+    func makeOrdersButton() {
+        ordersButton.snp.makeConstraints { make in
+            make.right.equalToSuperview().offset(-127)
+            make.bottom.equalToSuperview().offset(-1)
+        }
+    }
+    
+    func makeProfileButton() {
+        profileButton.snp.makeConstraints { make in
+            make.right.equalToSuperview().offset(-29)
+            make.bottom.equalToSuperview().offset(-1)
+        }
+    }
+    
+    func makeMenuBackground() {
+        menuBackground.snp.makeConstraints { make in
+            make.left.right.equalToSuperview()
+            make.bottom.equalTo(view.snp.bottom)
+            make.height.equalTo(29)
+        }
+    }
+    
+    func makeSortButton() {
+        sortButton.snp.makeConstraints { make in
+            make.centerX.equalToSuperview().dividedBy(2)
+            make.centerY.equalTo(filterSortBackground)
+        }
+    }
+    
+    func makeLineImage() {
+        lineImage.snp.makeConstraints { make in
+            make.centerX.equalToSuperview().offset(-22)
+            make.centerY.equalTo(filterSortBackground)
+        }
+    }
+    
+    func makeFilterButton() {
+        filterButton.snp.makeConstraints { make in
+            make.centerX.equalToSuperview().dividedBy(0.75)
+            make.centerY.equalToSuperview()
+        }
+    }
+    
+    func makeFilterSortBackground() {
+        filterSortBackground.snp.makeConstraints { make in
+            make.top.equalTo(searchBackground.snp.bottom).offset(24)
+            make.left.right.equalTo(searchBackground)
+            make.height.equalToSuperview().dividedBy(12)
+        }
+    }
+    
+    func makeSearchDetail() {
+        searchDetail.snp.makeConstraints { make in
+            make.bottom.equalToSuperview().offset(-4)
+        }
+    }
+    
+    func makeSearchBar() {
+        searchBar.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.left.equalToSuperview()
+            make.right.equalToSuperview()
+            make.bottom.equalToSuperview()
+          
+        }
+    }
+    
+    func makeSearchBackground() {
+        searchBackground.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(52)
+            make.left.equalToSuperview().offset(22)
+            make.right.equalToSuperview().offset(-22)
+            make.height.equalToSuperview().dividedBy(12)
         }
     }
 }
+
+

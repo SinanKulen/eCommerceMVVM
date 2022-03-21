@@ -11,8 +11,6 @@ protocol ProductListViewModelProtocol {
     var delegate : ProductListViewModelDelegate? { get set }
     var productList: ProductResponse { get set }
     func loadData()
-    func getSearchWithKeyword(_ keyword: String, _ completion: @escaping () -> Void)
-    func clearData()
     func refreshData()
 }
 
