@@ -33,6 +33,19 @@ final class ProductListViewModel: ProductListViewModelProtocol {
         }
     }
     
+    func getSearchWithKeyword(_ keyword: String, _ completion: @escaping () -> Void) {
+        productList.removeAll()
+        let sortedArray = productList.filter { item in
+            return item.title == keyword
+        }
+        self.productList = sortedArray
+        completion()
+    }
+    
+    func clearData() {
+        productList.removeAll()
+    }
+    
     func refreshData() {
         productList.removeAll()
         loadData()

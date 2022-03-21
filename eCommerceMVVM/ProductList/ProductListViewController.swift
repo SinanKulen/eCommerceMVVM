@@ -14,8 +14,10 @@ enum selectedCategory {
 
 class ProductListViewController: BaseViewController {
     
-    var isSort: Bool = false
+    var isSorting: Bool = false
+    var isSearching: Bool = false
     var selectedCategory : String = ""
+    var filterArray : [ProductDataModal] = []
     var viewModel: ProductListViewModelProtocol! {
         didSet {
             viewModel.delegate = self
@@ -41,26 +43,14 @@ class ProductListViewController: BaseViewController {
     }()
     
     //MARK: User Interface Element Propertys
-    private lazy var searchTextField: UITextField = {
-        var view = UITextField()
-        view.frame = CGRect(x: 0, y: 0, width: 278.29, height: 22)
+    private lazy var searchBar: UISearchBar = {
+        var view = UISearchBar()
+        view.delegate = self
+        view.frame = CGRect(x: 0, y: 0, width: 350, height: 40)
         view.backgroundColor = .white
-
-        view.textColor = UIColor(red: 0.613, green: 0.618, blue: 0.727, alpha: 1)
-        view.font = UIFont(name: "Titillium-Semibold", size: 16)
-        var paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineHeightMultiple = 1.15
-
+        view.tintColor = .darkGray
         view.placeholder = "Kategori veya ürün ara"
-        return view
-    }()
-    
-    private lazy var searchIcon: UIImageView = {
-        let view = UIImageView()
-        view.image = UIImage(named: "Icon")
-        view.frame = CGRect(x: 0, y: 0, width: 15.96, height: 16)
-        view.layer.backgroundColor = UIColor(red: 0.098, green: 0.098, blue: 0.098, alpha: 1).cgColor
-        view.backgroundColor = .white
+        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
@@ -310,10 +300,18 @@ class ProductListViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.loadData()
+//        viewModel.loadData()
+        getData()
         collectionView.refreshControl = refreshController
         configureRefreshController()
         setupView()
+    }
+    
+    private func getData() {
+        viewModel.loadData()
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
     }
     
     private func configureRefreshController() {
@@ -332,20 +330,18 @@ class ProductListViewController: BaseViewController {
         view.addSubview(searchBackground)
         searchBackground.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(52)
-            make.left.right.equalToSuperview().offset(22)
+            make.left.equalToSuperview().offset(22)
+            make.right.equalToSuperview().offset(-22)
             make.height.equalToSuperview().dividedBy(12)
         }
         
-        searchBackground.addSubview(searchIcon)
-        searchIcon.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.left.equalToSuperview().offset(17)
-        }
-        
-        searchBackground.addSubview(searchTextField)
-        searchTextField.snp.makeConstraints { make in
-            make.centerY.equalToSuperview().offset(-5)
-            make.left.equalToSuperview().offset(45)
+        searchBackground.addSubview(searchBar)
+        searchBar.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.left.equalToSuperview()
+            make.right.equalToSuperview()
+            make.bottom.equalToSuperview()
+          
         }
         
         searchBackground.addSubview(searchDetail)
@@ -458,14 +454,13 @@ class ProductListViewController: BaseViewController {
     @objc func tappedMenuButton() {
         let sortArray = viewModel.productList
         let sortedArray = sortArray.filter { item in
-            
            return item.category.rawValue == "electronics"
         }
-        
+        print(sortedArray)
     }
     
     @objc func tappedSortButton() {
-        isSort.toggle()
+        isSorting.toggle()
     }
 }
 
@@ -486,27 +481,34 @@ extension ProductListViewController: ProductListViewModelDelegate {
 
 extension ProductListViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.productList.count
+        if isSearching {
+            return filterArray.count
+        } else {
+            return viewModel.productList.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.collectionViewCellIdentifier, for: indexPath) as? CollectionViewCell else { return UICollectionViewCell() }
-        cell.saveModel(model: viewModel.productList[indexPath.row])
-        switch isSort {
-            case true:
-                let sortArray = viewModel.productList
-                let sortedArray = sortArray.sorted(by: { $0.price > $1.price})
-                cell.saveModel(model: sortedArray[indexPath.row])
+        if isSearching {
+            cell.saveModel(model: filterArray[indexPath.row])
+        } else {
+            switch isSorting {
+                case true:
+                    let sortArray = viewModel.productList
+                    let sortedArray = sortArray.sorted(by: { $0.price > $1.price})
+                    cell.saveModel(model: sortedArray[indexPath.row])
                 DispatchQueue.main.async {
-                    collectionView.reloadData()
-                }
-            case false:
-                let sortArray = viewModel.productList
-                let sortedArray = sortArray.sorted(by: { $0.price < $1.price})
-                cell.saveModel(model: sortedArray[indexPath.row])
-                DispatchQueue.main.async {
-                    collectionView.reloadData()
-                }
+                        collectionView.reloadData()
+                    }
+                case false:
+                    let sortArray = viewModel.productList
+                    let sortedArray = sortArray.sorted(by: { $0.price < $1.price})
+                    cell.saveModel(model: sortedArray[indexPath.row])
+                    DispatchQueue.main.async {
+                        collectionView.reloadData()
+                    }
+            }
         }
         return cell
     }
@@ -572,6 +574,20 @@ extension ProductListViewController
             make.top.equalTo(mensClothingButton.snp.bottom).offset(20)
             make.left.equalTo(mensClothingButton)
             make.right.equalTo(mensClothingButton)
+        }
+    }
+}
+
+extension ProductListViewController : UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text == "" {
+            isSearching = false
+            collectionView.reloadData()
+        } else {
+            isSearching = true
+            let list = viewModel.productList
+            filterArray = list.filter({ $0.title.contains( searchBar.text ?? "")})
+            collectionView.reloadData()
         }
     }
 }
