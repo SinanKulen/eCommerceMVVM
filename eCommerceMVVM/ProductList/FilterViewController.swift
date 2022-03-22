@@ -55,18 +55,4 @@ class FilterViewController: UIViewController {
         print("tıklandı")
     }
     
-   
-//    func setupView() {
-//        view.backgroundColor = .gray
-//        view.addSubview(filterBackground)
-//        filterBackground.backgroundColor = .white
-//        filterBackground.snp.makeConstraints { make in
-//            make.centerX.equalToSuperview()
-//            make.centerY.equalToSuperview()
-//        }
-//        filterBackground.addSubview(label)
-//        label.snp.makeConstraints { make in
-//            make.centerX.centerY.equalToSuperview()
-//        }
-//    }
 }
